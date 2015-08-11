@@ -430,52 +430,33 @@ Slightly less incoming energy passes into the control volume (\fref{fig:RealResp
 
 \section{Discussion}
 \label{sec:Discussion}
-\subsection{Scattering from linear calculations}
+\subsection{Estimating reflection co-efficients}
 
-The fraction of reflected tide can be predicted from linear theory to relatively good approximation using the method described by \citet{kellyetal13b} of matching Laplacian tidal solutions at discrete steps on a discretized topography.  Their work originally only considered tides normally incident to the topography, but oblique incidence is straight forward to calculate using the same numerical method, taking into account that the wavenumber normal to the topography is given by $k=K\cos{\theta}$.  Oblique incidence makes a substantial difference in the modal distribution of the reflected tide, with more oblique reflections scattering less energy to higher modes  for the topography used in the \mn{Shelf} case (\fref{fig:LinearCELTShelf}). At normal incidence for this shelf shape and stratification 75\% of the incoming energy reflects as mode 1, whereas for $30^o$ incidence, it is closed to 85\%, and reaches almost 100\% as incidence increases.  Agreement between the full numerical simulation and the linear model is good, though there is less energy in mode 2 and more in mode 3 in the model than the linear prediction.  Interestingly, most of this increased mode-1 reflection is at the expense of mode-2.  
+A major goal of this effort is estimating the fraction of incoming tide that is reflected by the Tasman continental slope to come up with a reflectivity co-efficient $R=F_{ref}/F_{in}$. Even here we need to be careful to discriminate between the mode-1 reflection, $R_1=F_{ref,1}/F_{in,1}$, and the total reflection into all the modes, $R_T=F_{ref}/F_{in}$. Evaluating these co-efficients is less straightforward than it may sound because it is difficult to separate the incoming from reflected signal in complicated geometry, even in a fully resolved numerical model, let alone in observations.  Above, we used an integrated measure, comparing the incoming flux from a model with no continental slope to one with a continental slope and integrating the fluxes over a control volume from $y=$0 to 400 km.  This was an arbitrary choice, but yielded reflectivities of $R_1=0.65$ and $R_T=0.76$ (\fref{fig:RealResponseMode1}).  
 
-\begin{figure}[htbp]
-  \begin{center}
-    \includegraphics[width=3.7in]{LinearCELTShelf}
-    \caption{The reflected flux for the \mn{Shelf} bathymetry (diamonds), and the results of a linear internal tide solution through a series of incident mode-1 angles.  
-      \tempS{\footnotesize /Users/jklymak/ttide/CELT/doc//CELTModel.ipynb ;     
-        /Users/jklymak/ttide/CELT/doc/LinearCELTShelf.pdf}
-       }\label{fig:LinearCELTShelf}
-  \end{center}
-\end{figure}
+Determining reflectivity from a mooring array is significantly complicated by three-dimensionality and along slope variability.  From the mooring array in \fref{fig:RealResponseMode1}, the reflectivity is $R_1=0.6/1.3=0.46$, a significant under-estimate.  The reason for this should be relatively clear from looking at \fref{fig:RealResponseMode1}a,b; the mooring array nicely captures the northward diffracted ray, but catches some of the reflected pattern from the main beam to the south. There are significant interferences in the reflected patterns (\fref{fig:RealResponseMode1}b) because the reflected pattern is a complicated superposition of the cylindrically spreading reflections along the slope.  
 
-Linear reflection from the real topography is quite variable, depending on the two-dimensional topography chosen and the angle of incidence (\fref{fig:RealReflExamp}).  Note that as the angle of incidence increases the standing wave's horizontal wavelength in the $x$ direction increases. However also note that high mode  reflected response has the same $x$ direction wavelength.  The response at $y=240\ \mathrm{km}$ goes through a significant scattering into higher modes and dissipation, with only 28\% of incoming mode-1 energy reflecting as mode-1.  Interestingly this number drops dramatically as the incident angle increases from 30 to 60 degrees.  
+Determining the reflectivity as a function of along-slope direction $y$ is difficult.  Simply lining up the onslope fluxes $x-$direction) does not yield useful results because the reflection from any given point on the slope radiates cylindrically, and it is necessary to integrate over volumes.  Here we take the same approach as used in the previous section (i.e. \fref{fig:RealResponseMode1}), but integrate over smaller control volumes (80 km in $y$) to see the reflectivity as a function of $y$ (\fref{fig:TwoDReflectivity}a,b).  The incoming flux every 80 km shows the diffracted beam pattern with a maximum net incoming flux at $y=120 km$ (\fref{fig:TwoDReflectivity}a, red line) and a secondary peak to the north at about $440\ \mathrm{km}$.  The net reflectivity from these boxes ranges from 0.8 to a low of almost zero at $y=280\ \mathrm{km}$ (\fref{fig:TwoDReflectivity}b, solid blue line).  Note an uncertainty in the flux decomposition associated with the flux in the cross terms (\fref{fig:TwoDReflectivity}a, purple line).  This term does not balance to zero, and forms a significant part of the energy budget over such small control volumes.  It cannot be uniquely decomposed into either the incoming or reflected energy terms, so remains as an uncertainty. 
 
 \begin{figure*}[htbp]
   \begin{center}
-    \includegraphics[width=6in]{RealReflExamp}
-    \caption{Velocity snapshots from linear calculation of reflecting mode-1 internal tide from three sections of bathymetry, and three incident angles.  
+    \includegraphics[width=\twowidth]{TwoDReflectivity}
+    \caption{a) Energy budget from 80 km by 80 km control volumes along the continental slope from the \mn{Real} simulations.  The incoming flux (red) is compared to the reflected (blue) and the cross terms (purple).  b) The reflection co-efficients.  The blue line is $R_1$, the mode-1 reflectivity in the 80-km control volumes along slope.  The black line is the mode-1 reflectivity from a linear model \citep{kelleyetal13b}, and the grey lines behind are the cumulative sum of modes 2, to 5 and then all the modes.  These do not sum up to one because the linear model has some ``viscosity'' that removes some high-mode energy.  The dashed lines are the mean of $R_1$ from the linear model if a constant average is taken (light blue, dashed), and if weighted by the diffracted beam strength (purple, dashed).  
       \tempS{\footnotesize /Users/jklymak/ttide/CELT/doc//CELTModel.ipynb ;     
-        /Users/jklymak/ttide/CELT/doc/RealReflExamp.pdf}
-      \label{fig:RealReflExamp} }
+        /Users/jklymak/ttide/CELT/doc/TwoDReflectivity.pdf}
+      \label{fig:TwoDReflectivity} }
   \end{center}
 \end{figure*}
 
-The variability of reflectivity along the slope is considerable (\fref{fig:TwoDReflectivity}), with values ranging from 9\% to 96\%.  However, much of the slope where the diffracted energy is the strongest ($y\approx 125 \mathrm{km}$ and $y\approx 425\ \mathrm{km}$) is also where the incoming energy in the means is the strongest, so when weighted by the forcing we expect the overall reflectivity to be approximately 80\%.  In the \mn{Real} numerical run, the reflectivity into mode-1 is only about 67\%, so somewhat less.  The differences are likely due to dissipation and possibly three dimensionality of the reflection pattern.   
+The fraction of the tide reflected into mode 1 (and higher) can be predicted from linear theory using the method described by \citet{kellyetal13b} of matching Laplacian tidal solutions at discrete steps on a discretized topography.  In two-dimensions an oblique incidence to the tide can make a substantial difference in the modal distribution of the reflected tide \citep{kellyetal13a}.   If we run these solutions for the Tasman Slope with an incident angle of 30 degrees, the reflectivity into mode-1, $R_1$ is similar to the numerical simulation (\fref{fig:TwoDReflectivity}b, thick black line).  The predicted reflectivity is greater for most of the ridge, but the null at $y=250\ \mathrm{km}$ is captured.  
 
-\begin{figure}[htbp]
-  \begin{center}
-    \includegraphics[width=3.7in]{TwoDReflectivity}
-    \caption{Strength of the reflection calculated from the two-dimensional linear method assuming an incident angle of 30 degrees, divided into vertical modes.  Dashed lines are means of mode-1 reflection,  centered where the main and northern lobes of the diffraction pattern hit the bathymetry, and one from $y=0\ \mathrm{km}$ to  $y=400\ \mathrm{km}$. Compare the reflectivity here with the 67\% reflectivity of mode 1 in the \mn{Real} simulation (\fref{fig:RealResponseMode1}).
-      \tempS{\footnotesize /Users/jklymak/ttide/CELT/doc//CELTModel.ipynb ;     
-        /Users/jklymak/ttide/CELT/doc/TwoDReflectivity.pdf}
-       }\label{fig:TwoDReflectivity}
-  \end{center}
-\end{figure}
+To compare with the energy budget for the \mn{Real} simulation above, we can average the reflectivity from the linear model between $y=0$ and $400\ \mathrm{km}$.  A naive average yields $R_1 = 0.71$, however, that does not take into account the varying strength of the incoming diffracted beam, which is stronger where the reflectivity is higher.  If we do that, the reflectivity averages $R_1=0.8$, and is substantially larger than $R_1$ over this same region from the numerical simulation of $R_1=0.65$.  
 
-\subsection{Comparison with Glider Antennas}
-
-
-Gliders surveys at this site are described by \citet{johnstonetal15}.  First, the gliders saw a substantial concentration of energy shoreward of the Tasman Rise.  This is a feature of the model, and clearly explained by the diffraction of energy by the Tasman Rise (\fref{fig:RealResponseMode1}).   
+An attempt has been made to estimate reflectivity from this site from autonomous gliders surveys at this site a\citep{johnstonetal15}.  First, the gliders saw a substantial concentration of energy shoreward of the Tasman Rise.  This is a feature of the model, and clearly explained by the diffraction of energy by the Tasman Rise (\fref{fig:RealResponseMode1}).   
 
 For the region in the lee of the Tasman Rise, \citet{johnstonetal15} estimate a reflectivity of the mode-1 internal tide of between 0.8 to 1.0 by fitting plane waves to the velocity and displacement amplitudes and phases.  If we confine our incoming versus outgoing energy budget to the region $80\ \mathrm{km}< y < 200\ \mathrm{km}$, representative of their \emph{Spray 56} deployment, we calculate a reflectivity of 0.7, which is lower than their lowest estimate of 0.8, and much lower than their high estimate of 1.0.  Their \emph{Spray 55} deployment covered more of the slope (up to $y=300\ \mathrm{km}$).  In this domain, they estimate a reflectivity of 0.6.  This is in excellent agreement with the numerical simulation, which achieves exactly the same result from $0\ \mathrm{km}< y < 300\ \mathrm{km}$.  
 
-The directions of wave propagation fit from the glider data is not as well in agreement with the model.  The fits to the \emph{Spray 55} data show incoming energy at between 125 and 145 degrees, which is similar to the model.  However the reflection is slightly south of due east (0 to -30 degrees geographic), where as the numerical model is definitely to the north east far from shore.  An explanation is evident from close inspection of \fref{fig:RealResponseMode1}b between the Tasman Rise and the continental slope.  Here the off-shore energy flux is almost exactly in the x-direction, (-12 degrees geographic), in agreement with the glider observations.  
+The directions of wave propagation fit from the glider data is not as well in agreement with the model.  The fits to the \emph{Spray 55} data show incoming energy at between 125 and 145 degrees, which is similar to the model.  However the reflection is slightly south of due east (0 to -30 degrees geographic), whereas the numerical model is definitely to the north east far from shore.  An explanation is evident from close inspection of \fref{fig:RealResponseMode1}b between the Tasman Rise and the continental slope.  Here the off-shore energy flux is almost exactly in the x-direction, (-12 degrees geographic), in agreement with the glider observations.  
 
 Finally, one of the gliders (\emph{Spray 56}) picked out a northward propagating disturbance along the continental slope with wavelength of 100 km.  This wavelength matches the wavelength of the slope wave seen in the real simulations (\fref{fig:DissReal1km03}a,b).  Interestingly, they only pick this wavelength out in vertical displacement data, not in velocity.  
 
@@ -505,7 +486,7 @@ Finally, one of the gliders (\emph{Spray 56}) picked out a northward propagating
 %  \end{center}
 %\end{figure}
 
-The structure of the barotropic-to-baroclinic conversion on the slope is an intriguing feature of these simulations.  It shows up most clearly in the \mn{Shelf} simulations because of the simplified bathymetry.  However, it is also clear in the \mn{Real} simulation (\fref{fig:DissReal1km03}a).  This slope wave redistributes energy in the reflected baroclinic response (\fref{fig:ShelfResponseMode1}), taking a relatively homogenous incoming energy source and focusing the reflection every 200 km or so along shelf.
+The structure of the barotropic-to-baroclinic conversion on the slope is an intriguing feature of these simulations, and appears in regional simulations (Simmons, in prep) and the glider data \citep{johnstonetal15}.  Here, it shows up most clearly in the \mn{Shelf} simulations because of the simplified bathymetry.  However, it is also clear in the \mn{Real} simulation (\fref{fig:DissReal1km03}a).  This slope wave redistributes energy in the reflected baroclinic response (\fref{fig:ShelfResponseMode1}), taking a relatively homogenous incoming energy source and focusing the reflection every 200 km or so along shelf.
 
 This wave is a slope mode that is strummed by the incident internal tide at the ``corner'' of the topography ($x=0$, $y=0$);  a long shelf without the corner does not excite this wave, nor does an internal tide coming directly from the east and hitting the topography at a normal angle.  The along-slope wavelength is independent of the along-slope wavelength in the open water (tested by changing the angle of the incident tide), and is a robust feature of the shelf shape.  Wider shelves have shorter along-slope wavelengths, and narrow shelves have longer (\fref{fig:ShelfWidthBTBC}).  
 
@@ -535,7 +516,7 @@ The simulations here exclude the local barotropic tide, so this would certainly 
 
 Regardless, it is useful to have separated the ``simplest'' response we could in this system to tease apart the dominant physics.  This response is complex enough as it is that it should be clear that solely observational efforts to balance a reflection budget are going to be a challenge.  Merging simulations and observations is a likely way forward in understanding the wave field in this complex slope region.
 
-With respect to the reflection problem, the modeled slope has quite high reflection back into the open ocean, with as much as 70\% of the incoming energy being reflected as mode-1.  Its possible that higher resolution runs will be more dissipative, and that stronger forcing will lead to a higher fraction of dissipation.  However, these simulations, and the results from the rest of the experiment to date \citep[i.e.][]{johnstonetal15} indicate that bulk of the energy from the Macquarie Ridge must dissipate elsewhere.  
+With respect to the reflection problem, the modeled slope has a relatively high reflection back into the open ocean, with as much as 65\% of the incoming energy being reflected as mode-1.  Its possible that higher resolution runs will be more dissipative, and that stronger forcing will lead to a higher fraction of dissipation.  However, these simulations, and the results from the rest of the experiment to date \citep[i.e.][]{johnstonetal15} indicate that bulk of the energy from the Macquarie Ridge must dissipate elsewhere.  
 
 \begin{acknowledgment} 
 Start acknowledgments here.
