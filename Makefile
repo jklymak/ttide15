@@ -19,4 +19,4 @@ jmkpython.tgz: $(pys) $(ms)
 	tar cvzf jmkpython.tgz *.py *.m
 
 install:
-	rsync -av ~/ttide/ttide15/ ~/Sites/ttide15
+	rsync -av ~/ttide/ttide15/ ~/Sites/ttide15 --exclude .git
