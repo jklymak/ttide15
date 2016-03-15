@@ -4,6 +4,7 @@
 
 This is the website with the analysis, data, and model setups for our paper "[Reflection of linear internal tides from realistic topography: The Tasman continental slope](./ttide15.pdf)", submitted to J. Phys. Ocean., 15 Mar 2016. (yes the name for this directory was optimistic). Note that the paper is not in an accepted form, and the analysis and data may change.
 
+Note that you can see this page on github, but some of the links don't necessarily work.  Visit [http://web.uvic.ca/~jklymak/ttide15/](http://web.uvic.ca/~jklymak/ttide15/) for the fully functional page.
 
 ## Analysis:
 
