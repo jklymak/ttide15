@@ -15,8 +15,7 @@ A couple of the figures were done in [./CELTModel.ipynb](./CELTModel.ipynb), [./
 
 A couple of the figures were done in [./TTideVarStrat.ipynb]([./TTideVarStrat.ipynb), [./TTideVarStrat.html](./TTideVarStrat.html)
 
-
-You will need some *.py and *.m files as well:  [./jmkpython.tgz](./jmkpython.tgz)
+You will need some *.py and *.m files in order to run these notebooks:  [./jmkpython.tgz](./jmkpython.tgz)
   
 ## Data:
 

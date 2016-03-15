@@ -1,0 +1,250 @@
+# packages in environment at /Users/jklymak/anaconda:
+#
+_license                  1.1                      py27_0    <unknown>
+abstract-rendering        0.5.1                np19py27_0    http://repo.continuum.io/pkgs/free/osx-64/abstract-rendering-0.5.1-np19py27_0.tar.bz2
+alabaster                 0.7.7                    py27_0    defaults
+anaconda                  2.3.0                np19py27_0    defaults
+appnope                   0.1.0                    py27_0    defaults
+appscript                 1.0.1                    py27_0    defaults
+apptools                  4.2.1                    py27_0    <unknown>
+argcomplete               0.8.9                    py27_0    defaults
+astropy                   1.0.3                np19py27_0    defaults
+atom                      0.3.9                    py27_0    http://repo.continuum.io/pkgs/free/osx-64/atom-0.3.9-py27_0.tar.bz2
+babel                     2.2.0                    py27_0    defaults
+backports.ssl-match-hostname 3.4.0.2                   <pip>
+basemap                   1.0.7                np18py27_0    http://repo.continuum.io/pkgs/free/osx-64/basemap-1.0.7-np18py27_0.tar.bz2
+bcolz                     0.9.0                np19py27_0    defaults
+beautiful-soup            4.3.2                    py27_0    http://repo.continuum.io/pkgs/free/osx-64/beautiful-soup-4.3.2-py27_0.tar.bz2
+beautifulsoup4            4.3.2                     <pip>
+biggus                    0.6.0                np18py27_0    https://conda.binstar.org/jklymak/osx-64/biggus-0.6.0-np18py27_0.tar.bz2
+binstar                   0.11.0                   py27_0    defaults
+biopython                 1.63                 np18py27_0    <unknown>
+bitarray                  0.8.1                    py27_0    <unknown>
+blaze                     0.6.3                np19py27_0    http://repo.continuum.io/pkgs/free/osx-64/blaze-0.6.3-np19py27_0.tar.bz2
+blaze-core                0.8.0                np19py27_0    defaults
+blz                       0.6.2                np19py27_1    defaults
+bokeh                     0.9.0                np19py27_0    defaults
+boto                      2.38.0                   py27_0    defaults
+bottleneck                1.0.0                np19py27_0    defaults
+cartopy                   1.6.0                    py27_0    https://conda.binstar.org/jklymak/osx-64/cartopy-1.6.0-py27_0.tar.bz2
+casuarius                 1.1                      py27_0    <unknown>
+cdecimal                  2.3                      py27_0    <unknown>
+certifi                   14.05.14                 py27_0    defaults
+cffi                      1.1.0                    py27_0    defaults
+chaco                     4.4.1                np19py27_0    http://repo.continuum.io/pkgs/free/osx-64/chaco-4.4.1-np19py27_0.tar.bz2
+click                     2.2                       <pip>
+clyent                    0.3.4                    py27_0    defaults
+codecov                   1.3.2                     <pip>
+colorama                  0.3.3                    py27_0    defaults
+colorspacious             0.1.0                     <pip>
+conda                     3.19.1                   py27_0    defaults
+conda-build               1.2.0                    py27_0    <unknown>
+conda-env                 2.4.5                    py27_0    defaults
+configobj                 5.0.6                    py27_0    http://repo.continuum.io/pkgs/free/osx-64/configobj-5.0.6-py27_0.tar.bz2
+configparser              3.3.0.post2               <pip>
+cov-core                  1.15.0                    <pip>
+coverage                  3.7.1                     <pip>
+cryptography              0.9.1                    py27_0    defaults
+cubes                     0.10.2                   py27_4    <unknown>
+curl                      7.43.0                        1    defaults
+cycler                    0.9.0                    py27_0    defaults
+cython                    0.22.1                   py27_0    defaults
+cytoolz                   0.7.3                    py27_0    defaults
+datashape                 0.4.5                np19py27_0    defaults
+dateutil                  2.4.1                    py27_0    defaults
+decorator                 4.0.6                    py27_0    defaults
+docopt                    0.6.2                     <pip>
+docutils                  0.12                     py27_0    http://repo.continuum.io/pkgs/free/osx-64/docutils-0.12-py27_0.tar.bz2
+dynd-python               0.6.5                np19py27_0    http://repo.continuum.io/pkgs/free/osx-64/dynd-python-0.6.5-np19py27_0.tar.bz2
+enable                    4.3.0                np19py27_2    http://repo.continuum.io/pkgs/free/osx-64/enable-4.3.0-np19py27_2.tar.bz2
+enaml                     0.9.8                    py27_0    http://repo.continuum.io/pkgs/free/osx-64/enaml-0.9.8-py27_0.tar.bz2
+enum34                    1.0.4                    py27_0    defaults
+envisage                  4.4.0                    py27_1    <unknown>
+fastcache                 1.0.2                    py27_0    defaults
+flask                     0.10.1                   py27_1    <unknown>
+flit-install-py2          0.1                       <pip>
+freetype                  2.5.5                         0    defaults
+funcsigs                  0.4                      py27_0    defaults
+future                    0.13.1                   py27_0    http://repo.continuum.io/pkgs/free/osx-64/future-0.13.1-py27_0.tar.bz2
+futures                   2.1.6                    py27_0    http://repo.continuum.io/pkgs/free/osx-64/futures-2.1.6-py27_0.tar.bz2
+geos                      3.3.3                         0    http://repo.continuum.io/pkgs/free/osx-64/geos-3.3.3-0.tar.bz2
+gevent                    1.0.1                    py27_0    http://repo.continuum.io/pkgs/free/osx-64/gevent-1.0.1-py27_0.tar.bz2
+gevent-websocket          0.9.3                    py27_0    http://repo.continuum.io/pkgs/free/osx-64/gevent-websocket-0.9.3-py27_0.tar.bz2
+gevent-zeromq             0.2.2                     <pip>
+gevent_zeromq             0.2.5                    py27_3    <unknown>
+gnureadline               6.3.3                     <pip>
+greenlet                  0.4.7                    py27_0    defaults
+grin                      1.2.1                    py27_1    <unknown>
+h5py                      2.5.0                np19py27_3    defaults
+hdf5                      1.8.15.1                      2    defaults
+hdf5storage               0.1.9                     <pip>
+hickle                    1.3.0                     <pip>
+idna                      2.0                      py27_0    defaults
+invoke                    0.10.1                    <pip>
+ipaddress                 1.0.7                    py27_0    defaults
+ipykernel                 4.2.2                    py27_0    defaults
+ipython                   4.0.3                    py27_0    defaults
+ipython-genutils          0.1.0                     <pip>
+ipython-notebook          3.2.0                    py27_0    defaults
+ipython-qtconsole         3.2.0                    py27_0    defaults
+ipython_genutils          0.1.0                    py27_0    defaults
+ipywidgets                4.0.2                    py27_0    defaults
+iris                      1.7.0                np18py27_1    https://conda.binstar.org/jklymak/osx-64/iris-1.7.0-np18py27_1.tar.bz2
+itsdangerous              0.24                     py27_0    http://repo.continuum.io/pkgs/free/osx-64/itsdangerous-0.24-py27_0.tar.bz2
+jdcal                     1.0                      py27_0    http://repo.continuum.io/pkgs/free/osx-64/jdcal-1.0-py27_0.tar.bz2
+jedi                      0.9.0                    py27_0    defaults
+jinja2                    2.8                      py27_0    defaults
+jpeg                      8d                            1    <unknown>
+jsonschema                2.4.0                    py27_0    defaults
+jupyter                   1.0.0                    py27_0    defaults
+jupyter-client            4.1.1                     <pip>
+jupyter-console           4.0.0                     <pip>
+jupyter-core              4.0.6                     <pip>
+jupyter_client            4.1.1                    py27_0    defaults
+jupyter_console           4.0.0                    py27_0    defaults
+jupyter_core              4.0.6                    py27_0    defaults
+keyring                   3.3                      py27_0    <unknown>
+kiwisolver                0.1.3                    py27_0    http://repo.continuum.io/pkgs/free/osx-64/kiwisolver-0.1.3-py27_0.tar.bz2
+krb5                      1.13.2                        0    defaults
+launcher                  1.0.0                         3    defaults
+lcms                      1.19                          0    http://repo.continuum.io/pkgs/free/osx-64/lcms-1.19-0.tar.bz2
+libdynd                   0.6.5                         0    http://repo.continuum.io/pkgs/free/osx-64/libdynd-0.6.5-0.tar.bz2
+libnetcdf                 4.3.3.1                       1    defaults
+libpng                    1.6.17                        0    defaults
+libsodium                 0.4.5                         0    http://repo.continuum.io/pkgs/free/osx-64/libsodium-0.4.5-0.tar.bz2
+libtiff                   4.0.2                         1    http://repo.continuum.io/pkgs/free/osx-64/libtiff-4.0.2-1.tar.bz2
+libxml2                   2.9.2                         0    defaults
+libxslt                   1.1.28                        2    <unknown>
+llvm                      3.3                           0    <unknown>
+llvmlite                  0.5.0                    py27_0    defaults
+llvmpy                    0.12.7                   py27_0    http://repo.continuum.io/pkgs/free/osx-64/llvmpy-0.12.7-py27_0.tar.bz2
+lxml                      3.4.4                    py27_0    defaults
+markupsafe                0.23                     py27_0    http://repo.continuum.io/pkgs/free/osx-64/markupsafe-0.23-py27_0.tar.bz2
+matplotlib                1.5.0               np110py27_0    defaults
+mayavi                    4.3.1                np18py27_0    <unknown>
+mdp                       3.3                  np18py27_0    <unknown>
+mistune                   0.7.1                    py27_0    defaults
+mitgcmutils               0.1.0                     <pip>
+mock                      1.0.1                    py27_0    <unknown>
+mpltools                  0.1                      py27_1    file:///Users/jklymak/anaconda/conda-bld/osx-64/mpltools-0.1-py27_1.tar.bz2
+multipledispatch          0.4.7                    py27_0    http://repo.continuum.io/pkgs/free/osx-64/multipledispatch-0.4.7-py27_0.tar.bz2
+natgrid                   0.1                       <pip>
+nbconvert                 4.1.0                    py27_0    defaults
+nbformat                  4.0.1                    py27_0    defaults
+nbgrader                  0.2.1                     <pip>
+netcdf4                   1.2.2               np110py27_0    defaults
+networkx                  1.9.1                    py27_0    http://repo.continuum.io/pkgs/free/osx-64/networkx-1.9.1-py27_0.tar.bz2
+nltk                      3.0.3                np19py27_0    defaults
+node-webkit               0.10.1                        0    http://repo.continuum.io/pkgs/free/osx-64/node-webkit-0.10.1-0.tar.bz2
+nose                      1.3.7                    py27_0    defaults
+notebook                  4.0.2                    py27_0    defaults
+numba                     0.19.1               np19py27_0    defaults
+numexpr                   2.4.3                np19py27_0    defaults
+numpy                     1.10.2                   py27_0    defaults
+numpydoc                  0.5                       <pip>
+oct2py                    3.3.3                     <pip>
+odo                       0.3.2                np19py27_0    defaults
+onship                    0.0.0                     <pip>
+openpyxl                  1.8.5                    py27_0    http://repo.continuum.io/pkgs/free/osx-64/openpyxl-1.8.5-py27_0.tar.bz2
+openssl                   1.0.2f                        0    defaults
+pandas                    0.16.2               np19py27_0    defaults
+pandoc                    1.0.0a8                   <pip>
+path.py                   8.1.2                    py27_1    defaults
+patsy                     0.3.0                np19py27_0    http://repo.continuum.io/pkgs/free/osx-64/patsy-0.3.0-np19py27_0.tar.bz2
+pep8                      1.7.0                    py27_0    defaults
+pexpect                   3.3                      py27_0    defaults
+pickleshare               0.5                      py27_0    defaults
+pil                       1.1.7                    py27_1    http://repo.continuum.io/pkgs/free/osx-64/pil-1.1.7-py27_1.tar.bz2
+pillow                    2.8.2                    py27_0    defaults
+pip                       8.0.2                    py27_0    defaults
+ply                       3.6                      py27_0    defaults
+proj4                     4.8.0                         0    https://conda.binstar.org/jklymak/osx-64/proj4-4.8.0-0.tar.bz2
+psutil                    3.4.2                    py27_0    defaults
+ptyprocess                0.4                      py27_0    defaults
+py                        1.4.27                   py27_0    defaults
+pyasn1                    0.1.7                    py27_0    defaults
+pyaudio                   0.2.7                    py27_0    <unknown>
+pycosat                   0.6.1                    py27_0    <unknown>
+pycparser                 2.14                     py27_0    defaults
+pycrypto                  2.6.1                    py27_0    <unknown>
+pycurl                    7.19.5.1                 py27_2    defaults
+pycurrents                0.0.0                     <pip>
+pyface                    4.4.0                    py27_0    <unknown>
+pyfiglet                  0.7                       <pip>
+pyflakes                  1.0.0                    py27_0    defaults
+pygments                  2.1                      py27_0    defaults
+pyke                      1.1.1                    py27_0    https://conda.binstar.org/jklymak/osx-64/pyke-1.1.1-py27_0.tar.bz2
+pykit                     0.2.0                np18py27_0    <unknown>
+pyopenssl                 0.15.1                   py27_1    defaults
+pyparsing                 2.0.3                    py27_0    defaults
+pyqt                      4.11.4                   py27_1    defaults
+pysal                     1.6.0                np18py27_1    <unknown>
+pysam                     0.6                      py27_0    <unknown>
+pyserial                  2.7                       <pip>
+pyshp                     1.2.0                    py27_0    https://conda.binstar.org/jklymak/osx-64/pyshp-1.2.0-py27_0.tar.bz2
+pyside                    1.1.2                    py27_1    <unknown>
+pytables                  3.2.0                np19py27_0    defaults
+pytest                    2.7.1                    py27_0    defaults
+pytest-cov                2.1.0                     <pip>
+python                    2.7.11                        0    defaults
+python-dateutil           2.4.2                    py27_0    defaults
+python.app                1.2                      py27_4    defaults
+pytz                      2015.7                   py27_0    defaults
+pyyaml                    3.11                     py27_1    defaults
+pyzmq                     15.2.0                   py27_0    defaults
+qt                        4.8.7                         1    defaults
+qtconsole                 4.1.1                    py27_0    defaults
+readline                  6.2                           2    <unknown>
+redis                     2.6.9                         0    <unknown>
+redis-py                  2.10.3                   py27_0    defaults
+requests                  2.9.1                    py27_0    defaults
+rodeo                     0.2.1                     <pip>
+rope                      0.9.4                    py27_1    http://repo.continuum.io/pkgs/free/osx-64/rope-0.9.4-py27_1.tar.bz2
+runipy                    0.1.3                    py27_0    defaults
+scikit-image              0.11.3               np19py27_0    defaults
+scikit-learn              0.16.1               np19py27_0    defaults
+scipy                     0.16.1              np110py27_0    defaults
+seawater                  3.3.4                     <pip>
+selenium                  2.47.1                    <pip>
+setuptools                19.6.2                   py27_0    defaults
+sh                        1.11                      <pip>
+shapely                   1.3.2                    py27_0    http://repo.continuum.io/pkgs/free/osx-64/shapely-1.3.2-py27_0.tar.bz2
+shiboken                  1.1.2                    py27_0    <unknown>
+simplegeneric             0.8.1                    py27_0    defaults
+sip                       4.16.9                   py27_0    defaults
+six                       1.10.0                   py27_0    defaults
+snowballstemmer           1.2.1                    py27_0    defaults
+sockjs-tornado            1.0.1                    py27_0    http://repo.continuum.io/pkgs/free/osx-64/sockjs-tornado-1.0.1-py27_0.tar.bz2
+sphinx                    1.3.5                    py27_0    defaults
+sphinx-rtd-theme          0.1.8                     <pip>
+sphinx_rtd_theme          0.1.9                    py27_0    defaults
+spyder                    2.3.8                    py27_0    defaults
+spyder-app                2.3.5.2                  py27_0    defaults
+sqlalchemy                1.0.5                    py27_0    defaults
+sqlite                    3.9.2                         0    defaults
+ssl_match_hostname        3.4.0.2                  py27_0    <unknown>
+statsmodels               0.6.1                np19py27_0    defaults
+sympy                     0.7.6                    py27_0    defaults
+tables                    3.2.0                     <pip>
+termdown                  1.3.0                     <pip>
+terminado                 0.5                      py27_0    defaults
+tk                        8.5.18                        0    http://repo.continuum.io/pkgs/free/osx-64/tk-8.5.18-0.tar.bz2
+toolz                     0.7.2                    py27_0    defaults
+tornado                   4.2.1                    py27_0    defaults
+traitlets                 4.1.0                    py27_0    defaults
+traits                    4.4.0                    py27_0    <unknown>
+traitsui                  4.4.0                    py27_0    <unknown>
+udunits2                  2.1.24                        0    https://conda.binstar.org/jklymak/osx-64/udunits2-2.1.24-0.tar.bz2
+ujson                     1.33                     py27_0    <unknown>
+unicodecsv                0.9.4                    py27_0    http://repo.continuum.io/pkgs/free/osx-64/unicodecsv-0.9.4-py27_0.tar.bz2
+viscm                     0.3                       <pip>
+vtk                       5.10.1                   py27_0    <unknown>
+werkzeug                  0.10.4                   py27_0    defaults
+wheel                     0.26.0                   py27_1    defaults
+xlrd                      0.9.4                    py27_0    defaults
+xlsxwriter                0.7.3                    py27_0    defaults
+xlwings                   0.3.5                    py27_0    defaults
+xlwt                      1.0.0                    py27_0    defaults
+yaml                      0.1.6                         0    defaults
+zeromq                    4.0.5                         0    defaults
+zlib                      1.2.8                         0    http://repo.continuum.io/pkgs/free/osx-64/zlib-1.2.8-0.tar.bz2
