@@ -1,263 +1,243 @@
-# plotting the energy budget from a structure D.
+
+# coding: utf-8
+
+# In[1]:
+
 import numpy as np
-import matplotlib.pyplot as plt
-from matplotlib.colors import LinearSegmentedColormap
-import matplotlib.gridspec as gridspec
-import matplotlib.cm as cm
-import scipy.signal as signal
-def plotEnergyBudget(D,scale=1.):
-    xl = [-40.,100.]
-    yl=[0.,400.]
+import matfile as mf
+import hdf5storage
+import cPickle as pickle
+from multiprocessing import Pool
+import itertools,time
 
-    Pu=D['uPbc']
-    Pv = D['vPbc']
-    H=D['Depth']
-    x=D['x']/1e3
-    y=D['y']/1e3
-    
-    cmap=cm.get_cmap('RdBu_r')
+# get the exact shelves:
 
-    divPbc = np.diff(Pu[:-1,:],axis=1)/np.diff(x)
-    divPbc+=(np.diff(Pv[:,:-1],axis=0).T/np.diff(y)).T
-    #divPbc=divPbc/1000.
 
-    dEdt = 1000*(D['Ebc']-D['Ebc0'])/12.4/3600.
 
-    #    djmkfigure(2,0.5)
-    fig = plt.figure(figsize=(10,5.3))
-    gs=gridspec.GridSpec(1,4,right=0.87,left=0.085,bottom=0.08,wspace=0.07,top=0.97)
-      
-    kernel=np.ones((4,4))/16.
-    ax=[0,0,0,0]
-    Z=[0,0,0,0]
-    Z[0]=signal.convolve2d(D['Conv']*1000.*1000.,kernel,mode='same')
-    Z[1]=-1000*signal.convolve2d(divPbc,kernel,mode='same')
-    Z[2]=-1000*signal.convolve2d(dEdt,kernel,mode='same')
-    Z[3]=-1000.*signal.convolve2d(divPbc-1000.*D['Conv'][:-1,:-1]+dEdt[:-1,:-1],kernel,mode='same')
-    tit=['BT-BC conv.','BC Convergence','dE/dt','Diss. $[mW/m^2]$']
-
-    for nn in range(4):
-        ax[nn]=plt.subplot(gs[nn])
-    
-        pcm=ax[nn].pcolormesh(x,y,Z[nn],
-                     rasterized=True,cmap=cmap)
-        pcm.set_clim(np.array([-1.,1.])/20./4.*1000.*scale)
-        plotdepthcont(ax[nn],x,y,H)
-        plotBox(ax[nn],x,y,xl,yl)
-        ax[nn].set_aspect(1.)
-        plt.title(tit[nn],fontsize=12)
-        plt.xlabel('X [km]')
-        plt.ylabel('Y [km]')
-   
-    colorbarRight(pcm,gs,fig,width=0.012,shrink=0.55,extend='both')
-    for aa in ax:
-        print aa
-        aa.set_ylim([-80.,500.])
-        aa.set_xticks(np.arange(-200.,200.,100.))
-        aa.set_xlim([-99.,180])
+def SolveRefl(k=0.,f =1.06e-4,omega=1.45e-4+1j*1e-6,Nsq0=0.01**2,wall=True,H=[],x=[],J=30):
+    '''x,z,H,P=SolveRefl(k=0.)
+     
+    ''' 
+    inv = np.linalg.inv
+    ## Model Params:  
+    k00=k
+    dz = 1./(J+1)
+    usebcs = True
+    if usebcs:
+        shape=np.cos
+        z = np.linspace(-1.,0.,J+1)
+        z = z[:-1]+(z[1]-z[0])/2.
         
-    for aa in ax[1:]:
-        aa.set_yticklabels('')
-        aa.set_ylabel('')
-    sublabel(np.array(ax),fontsize=12)
-    return fig
+    else:
+        shape = np.sin
+        z = np.arange(-dz*(J),-dz+0.00001,dz)
+        
+    dz = z[1]-z[0]
+    lamsq = (omega**2-f**2)/(Nsq0 - omega**2)+0*z
 
-def plotBox(ax,x,y,xl,yl):
-    inx=np.where((x>xl[0]) & (x<=xl[1]))[0]
-    iny=np.where((y>yl[0]) & (y<=yl[1]))[0]
-    ax.plot(x[inx[[0,-1,-1,0,0]]],y[iny[[0,0,-1,-1,0]]],color='g',linewidth=1.)
-def plotsponge():
-    spongew=40
-    plot(x[spongew-1]*array([1,1]),y[[0,-1]],'c',linewidth=1,alpha=0.5)
-    plot(x[-spongew]*array([1,1]),y[[0,-1]],'c',linewidth=1,alpha=0.5)
-    plot(x[[0,-1]],y[spongew-1]*array([1,1]),'c',linewidth=1,alpha=0.5)
-    plot(x[[0,-1]],y[-spongew]*array([1,1]),'c',linewidth=1,alpha=0.5)
-def plotdepthcont(ax,x,y,H):
-    ax.contour(x,y,-H,[-250.,-3000,-2000,-1000,-4000,-10000],colors='k',linestyles='solid',alpha=0.5,linewidth=1.5)
-    ax.contourf(x,y,-H,[-1.,0.],colors=[[0.2,0.45,0.2]],linestyles='solid',alpha=1.,linewidth=1.5)
-    #inx = where(diff(x)<=1.)[0]
-    #iny = where(diff(y)<=1.)[0]
-    #plot(x[inx[[0,-1,-1,0,0]]],y[iny[[0,0,-1,-1,0]]],color='g',linewidth=1.)
-#pcm=pcolormeshRdBu(x,y,P)
+    if len(x)==0:
+        I=64
+        x = np.linspace(0.,60.1e3,I)
+    else:
+        I = len(x)
+    dx = x[2]-x[1]
+    # Some topo:
+    if len(H)==0:
+        H=3200-(3200-120)/2.*np.tanh(0.12e-3*(x-30e3))-(3200-120)/2;
+    #H=225.0 - 50.0*np.exp(-((x-40.e3)/3.e3)**2)
+    #H = 225+0*H
+    H[-2]=H[-1]; 
+    H[1]=H[0]
 
-def sublabel(axs,fontsize=9):
-    '''
-    sublabel(axs,fontsize=9):
-    '''
-    for nn,ax in enumerate(axs.flatten()):
-        ax.text(0.05,1.-0.07,'%c)'%chr(ord('a')+nn),
-                fontsize=fontsize,transform = ax.transAxes,
-                color='#555555',
-               bbox=dict(facecolor='w', edgecolor='None',
-                        alpha=0.85))
-
-
-# LatLon to Model
-def lonlat2modxy(lon,lat):
+    Hx = np.gradient(H,dx);Hxx = np.gradient(Hx,dx)
     
-    Lat0=-44.
-    Lon0=148
-    kmpernm = 1.8532
+    # set up matrix multipliers...
+    P1 = np.zeros((J,J));
+    P2 = np.zeros((J,J));
+    for j in range(1,J-1):
+        P1[j,j-1]=-1;P1[j,j+1]=1;
+        P2[j,j-1]=1;P2[j,j]=-2;P2[j,j+1]=1;
+    P1[0,1]=1;P1[J-1,J-2]=-1;
+    P2[0,0]=-2; P2[0,1]=1;P2[J-1,J-2]=1;P2[J-1,J-1]=-2;
 
-    x=(lon-Lon0)*kmpernm*60.*np.cos(Lat0*np.pi/180)
-    y=(lat-Lat0)*kmpernm*60.
-    xx=x+1j*y
-    xx=xx*np.exp(1j*12.*np.pi/180.)
-    return np.real(xx),np.imag(xx)
-def modxy2lonlat(x,y):
-    Lat0=-44.
-    Lon0=148
-    kmpernm = 1.8532
-    xx=x+1j*y
-    xx=xx*np.exp(-1j*12.*np.pi/180.)
-    lon = np.real(xx)/kmpernm/60/np.cos(Lat0*np.pi/180.)+Lon0
-    lat = np.imag(xx)/kmpernm/60+Lat0
-    return lon,lat
+    Z = np.diag(z,k=0)+0.*1j;eye = np.eye(J)+0.*1j
+    ## To get started, we need P01, P02, and E and Ep...
 
-def colorbarRight(pcm,ax,fig,shrink=0.7,width=0.025,gap=0.03,**kwargs):
-    '''
-    def colorbarRight(pcm,ax,fig,shrink=0.7,width=0.05,gap=0.02)
+    ### P0:  Amp*exp(j(kn x - om t + k y))phi(z)
+    Amp = 0.+0.*1j
+    pin1 = Amp*shape(z*np.pi)
+    k1 = (np.pi/H[0])**2 * lamsq[0] - k00**2
+    if k1<0:
+        k1 = -1j*np.sqrt(-k1) # forcingd decays to left
+    else:
+        k1 = np.sqrt(k1) # wave is cominhg from right
+    pin2 = pin1*(1+1j*k1*dx)  # = pin1 + dx *dPin/dx 
     
-    Position colorbar to the right of axis 'ax' with colors from artist pcm.
-    ax can be an array of axes such as that returned by "subplots".
-    
-    ax can also be a GridSpec, in which case the colorbar is centered to the
-    right of the grid.  
-    
-    Defaults might no leave enough room for the colorbar on the right side, so 
-    you should probably use subplots_adjust() or gridspec_update() to make more 
-    space to the right:
-    
-    # with subplots:
-    import matplotlib.pyplot as plt
-    fig,ax=plt.subplots(2,2)
-    fig.subplots_adjust(right=0.87)
-    for axx in ax.flatten():
-        pcm=axx.pcolormesh(rand(10,10))
-    colorbarRight(pcm,ax,fig,extend='max')
-    
-    # with gridspec:
-    import matplotlib.gridspec 
-    import matplotlib.pyplot as plt
-    fig=plt.figure()
+    ### E and Ep
+    # for general Nsq we need to solve the eignevalue problem.  Lets be lazy here.
+    nmodes = J-2
+    E1 = np.zeros((J,nmodes))*1j
+    K = np.zeros((nmodes,nmodes))*1j
+    for j in range(nmodes):
+        E1[:,j]=-np.sqrt(2.*dz)*shape((j+1)*z*np.pi)
+        kk = ((j+1)*np.pi/H[0])**2 * lamsq[0] - k00**2 + 0*1j
+        kk = np.sqrt(kk)
+        ## Note that kk can be complex:
+        if np.real(kk)>0:
+            # choose the negative so that we are radiating offshore:
+            kk = -kk
+        if 0:
+            if kk<0:
+                kk=-1j*np.sqrt(-kk)  # decay to left
+            else:
+                kk = -np.sqrt(kk) # leftward!
+        K[j,j] = 1j*kk*dx
+    alpha=[]
+    beta=[]
+    for k in range(I+1):
+        alpha.append(np.zeros((J,J))*1j)    
+        beta.append(np.zeros((J))*1j)
+    ee = E1.dot(K).dot(E1.transpose().conj())
+    alpha[0]=inv(eye+ee)
+    beta[0]=pin1-inv(eye+ee).dot(pin2)
 
-    gs = gridspec.GridSpec(2,2)
-    gs.update(right=0.87)
-    for ii in range(2):
-        for jj in range(2):
-            ax=plt.subplot(gs[ii,jj])
-            pcm=ax.pcolormesh(rand(10,10))
-    colorbarRight(pcm,gs,fig,extend='max')
-    '''
-    import numpy as np
-    import matplotlib.gridspec as gs
-    import matplotlib.pyplot as plt
-    if type(ax) is gs.GridSpec:
-        # gridspecs are different than axes:
-        pos = ax.get_grid_positions(fig)
-        y0 = pos[0][-1]
-        y1 = pos[1][0]
-        x1 = pos[3][-1]
-    else: 
-        if ~(type(ax) is np.ndarray):
-            # these are supposedly axes:
-            ax=np.array(ax)
-        # get max x1, min y0 and max y1
-        y1 = 0.
-        y0 = 1.
-        x1=0.
-        for axx in ax.flatten():
-            pos=axx.get_position()
-            x1=np.max([pos.x1,x1])
-            y1=np.max([pos.y1,y1])
-            y0=np.min([pos.y0,y0])
-    height = y1-y0
-    pos2 = [x1 + gap, y0 + (1.-shrink)*height/2.,  width, height*shrink]
-    cax=plt.axes(position=pos2)
-    fig.colorbar(pcm,cax=cax,**kwargs)
-
-def getCmap2():
-    cmap = plt.get_cmap('RdBu_r')
-    colors = cmap(np.linspace(0.5, 1, cmap.N // 2))
-    # Create a new colormap from those colors
-    cmap2 = LinearSegmentedColormap.from_list('Upper Half', colors)
-    return cmap2
-
-def plotFluxes(ax,D,dx=50,dy=50):
-
-    H=D['Depth'];x=D['x']/1e3;y=D['y']/1e3
-   
-    cmap2=getCmap2()
-    F=np.abs(D['uPbc']+1j*D['vPbc']); H = D['Depth']; Fu=D['uPbc'];Fv=D['vPbc']
-    pcm1=ax.pcolormesh(x,y,F,cmap=cmap2,rasterized=True)
-    pcm1.set_clim(0,3.)
-    
-    xg = np.arange(min(x),max(x),dx);yg = np.arange(min(y),max(y),dy)
-    X,Y=np.meshgrid(xg,yg)
-    # get Pug and Pvg
-    Pug=0.*X;Pvg=0.*Y
-    for j in range(np.size(yg)):
-        indy = np.where(y>yg[j])[0][0]
-        aa=np.interp(xg,x,Fu[indy,:])
-        Pug[j,:]=aa
-        Pvg[j,:]=np.interp(xg,x,Fv[indy,:])
-    ax.quiver(xg,yg,Pug,Pvg,scale=20.,color='0.5',edgecolors='0.5',linewidths=(1,))
-    plotdepthcont(ax,x,y,H)
-    ax.set_aspect(1.)
-    return pcm1
-
-
-def wavefit(parms,ampu,ampv,ampp,x,y,ka,om,f,dirs0):
-    # for n values of ampu, ampv, and ampp, minimiaze 
-    # the error of the wave fit to the N waves searched for with
-    # parms.  Parms are a complex value for the amplitudes
-    # and a theta for the diretion of the waves.
-    chi2=0.
-    spread = 20.*np.pi*180.
-    ampr = np.array(parms[::3])
-    ampi = np.array(parms[1::3])
-    dirs = np.array(parms[2::3])
-
-    amps=ampr+1j*ampi
-    if len(amps)<1:
-        amps = [amps]
-    mult=1.
-    for nn in range(len(dirs)):
-        if (np.abs(dirs[nn]-dirs0[nn])>spread):
-            mult=mult*1.
-    for i,uu in enumerate(ampu):
-        # for each mooring
-        p=0.
-        u=0.
-        v=0.
-        for j,aa in enumerate(amps):
-            k=np.cos(dirs[j])*ka
-            l=np.sin(dirs[j])*ka
-            
-            pp = amps[j]*np.exp(1j*(k*x[i]+l*y[i]))
-            u += pp*(k*om+1j*l*f)/(om**2-f**2)
-            v += pp*(l*om-1j*k*f)/(om**2-f**2)
-            p+=pp
-            #if (dirs[j]<-pi)or(dirs[j]>pi):
+    ## So, that eliminates the error from the LHS....
+    gamsq = lamsq/(Nsq0 - omega**2)
+    dxsq=dx**2
+    for i in range(1,I-1):
+        #print i
+        G2 = -2*Hx[i]/H[i]*Z                               # G2 
+        G3 = -(Hxx[i]*H[i]-2*Hx[i]**2)/H[i]**2*Z
+        G4 = (Hx[i]**2*Z.dot(Z)-np.diag(lamsq))/H[i]**2   # G4
+        # get A, B , C , D
+        D = np.zeros((J))*1j## This needs to be set to something if you want internal forcing (versus an incoming wave)
+        if np.abs(x[i]-10e3)<0.5e3:
+            D[:J/3]+=1./1000.
+            D[J/3:]+=0./1000.
                 
-               # mult=mult*100.
-        # u,v,p are three values of the amplitudes at this mooring, so the question is 
-        # how they compare to the observed
-        # we will try to correct for p by scaling by om**2-f**2
-        chi2+=(1.*np.abs(ampu[i]-u)**2)+1.*np.abs(ampv[i]-v)**2+(np.abs(ampp[i]-p)**2)*(ka**2)*(om**2)/(om**2-f**2)**2
-        #        chi2+=100.*((abs(ampp[i])-abs(p))**2)*(ka**2)*(om**2)/(om**2-f**2)**2
-        #print abs(ampp[i]-p)
-        # this error function does a terrible job on wave direction.  
-        vpin = np.real(ampv[i])*np.real(ampp[i])+np.imag(ampv[i])*np.imag(ampp[i])
-        vp = np.real(v)*np.real(p)+np.imag(v)*np.imag(p)
-        upin = np.real(ampu[i])*np.real(ampp[i])+np.imag(ampu[i])*np.imag(ampp[i])
-        up = np.real(u)*np.real(p)+np.imag(u)*np.imag(p)
- #       chi2+=1.*(np.abs(vpin-vp)**2+np.abs(upin-up)**2)
-        #if abs(pp)>3.:
-        #    chi2=chi2*abs(pp)**2.
-           # print abs(pp)
-
-        chi2=chi2*mult
+        A = eye*1./dxsq - G2.dot(P1)/4./dx/dz
+        B = -eye*(2./dxsq + k00**2) + G3.dot(P1)/2./dz +G4.dot(P2)/dz**2
+        C = eye*1./dxsq + G2.dot(P1)/4./dx/dz
+        if usebcs:
+            b1 = (lamsq[0]-Hx[i]**2)/H[i]; b2=Hx[i]; b3 = -f*k00/omega*Hx[i];
+            
+            A[0,0]=b2/2./dx; A[0,1]=0; # seafloor
+            A[J-1,J-1]=1./4./dx**2;A[J-1,J-2]=0. # sea surface...
+            #A[0,0]=1./4./dx**2;A[0,1]=0. # sea floor...
+            
+            B[0,0]= -b1/dz - b3;B[0,1]=+b1/dz
+            B[J-1,J-1]=(-2./4./dx**2-k00**2) + lamsq[0]/dz;  B[J-1,J-2]=-lamsq[0]/dz
+            #B[0,0]=(-2./4./dx**2-k00**2) + lamsq[0]/dz;  B[0,1]=-lamsq[0]/dz
+            
+            C[0,0]=-b2/2./dx;C[0,1]=0;
+            C[J-1,J-1]=1./4./dx**2;C[J-1,J-2]=0.;
+            #C[0,0]=1./4./dx**2;C[0,1]=0.;
         
-    return chi2
-#####
+        bb = np.linalg.inv(A.dot(alpha[i-1])+B)
+        alpha[i]=-bb.dot(C)
+        beta[i]=bb.dot(D)-(bb.dot(A).dot(beta[i-1]))
+
+    # get P[I-1]
+    P = np.zeros((J,I))+0.0*1j
+    inv = np.linalg.inv
+
+    if wall:        
+        P[:,I-1] = inv(eye*(1.-f*k00*dx/omega)-alpha[I-2]).dot(beta[I-2])
+    else: # radiating...
+        E2 = np.zeros((J,nmodes))*1j
+        E2d = np.zeros((J,nmodes))*1j
+        K = np.zeros((nmodes,nmodes))*1j
+        for j in range(nmodes):
+            kk = ((j+1)*np.pi/H[I-1])**2 * lamsq[0] - k00**2
+            kk = np.sqrt(kk)
+            
+            E2[:,j]=-np.sqrt(2.*dz)*shape((j+1)*z*np.pi)*np.exp(1j*kk*x[-1])
+            K[j,j]= 1j*kk*dx
+            E2d[:,j]=1j*kk*E2[:,j]
+        E2d=E2.dot(K)
+        E2inv = E2.transpose().conj()
+        #phi(:,I)=inv(eye(J)-Hx(I)/H(I)/2/dz*dx*Z*P1-alp(:,:,I-1)-dx*E2d*inv(E2))*bta(:,I-1);
+        P[:,I-1]= inv(eye-alpha[I-2]-E2d.dot(E2inv)).dot(beta[I-2])
+        #P[0,I-1]=P[1,I-1]
+        #P[-1,I-1]=P[-2,I-1]
+        
+    for i in range(I-2,-1,-1):
+        P[:,i] = alpha[i].dot(P[:,i+1])+beta[i]
+    return x,z,H,P
+
+
+# In[12]:
+
+
+
+def getRes(Hk):
+    
+    H=Hk[0]
+    k=Hk[1]
+    N0=Hk[2]
+    xmod=Hk[3]
+    f=1.e-4
+    omega = np.pi*2./12.4/3600.
+
+    x,z,H,P=SolveRefl(k=k,Nsq0=N0**2,omega=omega+1j*1e-6,f=f,wall=True,x=xmod*1e3,H=H,J=32*2)
+    res=1.e-99
+    for num,dt in enumerate(np.linspace(0.,np.pi,100)):
+        ind = np.where(x>90e3)[0]
+        re=np.mean(np.abs(np.real(P[:,ind]*np.exp(1j*dt)))*H[np.newaxis,ind])
+        if re>res:
+            res=re
+    return res,k
+
+if __name__ == '__main__':
+    todo = ['Shelf100km','Shelf1km03','Shelf1km04','Shelf020km']
+    Hwkb=[]
+
+    xmod=np.linspace(0.,170.,140)
+    for nn,td in enumerate(todo):
+        D = hdf5storage.loadmat('../ttide15/Tas3d/%s/Diags0360.mat'%td)
+        H = D['Depth'].transpose()[:,-1]
+        x = -D['x']/1e3-30.+170
+        ray=mf.loadmatbunch ('../TasmaniaRays.mat')
+        ray = ray['ray']
+        z=np.arange(0.,5000.,2.)
+        
+        N=  np.interp(z,ray['z'],np.sqrt(ray['N2']))
+        N0 = np.mean(N)
+        zwkb=np.cumsum(N/N0*2)
+        hh = np.interp(H,z,zwkb)
+        Hwkb.append(np.interp(-xmod,-x,hh))
+        
+    lam = np.linspace(30,350.0,100)*1e3
+    ks = np.pi*2./lam
+    kims = np.linspace(0,np.pi*2./40e3,2)
+    
+    resp=[]
+    ## Scan im/re k space:
+    hin=2
+
+    p = Pool(1)
+    for hin in range(1):
+        resp.append(np.zeros((len(kims),len(ks))))
+        t0 = time.time()
+        print hin
+        for m,kim in enumerate(kims):
+            print m
+            ## try pool
+            k = ks+1j*kim # propagate N and decay to north...
+            Hk= itertools.izip(itertools.repeat(Hwkb[hin]),k,itertools.repeat(N0),itertools.repeat(xmod))
+            r = p.map(getRes,Hk)
+            rr = np.zeros(len(r))
+            kk = np.zeros(len(r))*1j
+            for nnn in range(len(r)):
+                rr[nnn]=r[nnn][0]
+                kk[nnn]=r[nnn][1]
+
+
+            
+            resp[hin][m,:]=rr[np.argsort(np.real(kk))]
+
+        t1=time.time()
+        print(t1-t0)
+
+    pickle.dump(resp,open('resp.pickle','wb'))
+
